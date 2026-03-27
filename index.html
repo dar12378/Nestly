@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KinFlow Family App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="hero">
+      <div class="hero-left">
+        <div class="pill">Family Admin Dashboard</div>
+        <h1>KinFlow</h1>
+        <p>
+          One place for family events, daily reminders, screen time, location,
+          child email invite, Family Link style locking, and child card spending.
+        </p>
+      </div>
+      <div class="hero-right">
+        <h3>Daily summary</h3>
+        <p>
+          Today: Idan's friend birthday at 17:00. Danny spent ₪100 at Chaim Ice Cream at 12:00.
+        </p>
+      </div>
+    </header>
+
+    <section class="summary-grid">
+      <div class="card summary-card">
+        <h4>Family members</h4>
+        <div class="big-number" id="memberCount">4</div>
+        <p>Admin, parents, and children</p>
+      </div>
+
+      <div class="card summary-card">
+        <h4>Events today</h4>
+        <div class="big-number" id="eventCount">2</div>
+        <p>Birthdays, school, rides, activities</p>
+      </div>
+
+      <div class="card summary-card">
+        <h4>Screen time alerts</h4>
+        <div class="big-number">2</div>
+        <p>Children above target</p>
+      </div>
+
+      <div class="card summary-card">
+        <h4>Child card spending</h4>
+        <div class="big-number" id="totalSpending">₪128</div>
+        <p>Visible by child, amount, time, and store</p>
+      </div>
+    </section>
+
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="family">Family</button>
+      <button class="tab-btn" data-tab="events">Events</button>
+      <button class="tab-btn" data-tab="screen">Screen Time</button>
+      <button class="tab-btn" data-tab="location">Location</button>
+      <button class="tab-btn" data-tab="spending">Card Spending</button>
+    </nav>
+
+    <main>
+      <section class="tab-content active" id="family">
+        <div class="grid two-cols">
+          <div class="card">
+            <h2>Family structure</h2>
+            <div id="membersList"></div>
+          </div>
+
+          <div class="card">
+            <h2>Invite child by email</h2>
+            <p class="muted">
+              Parent admin can add another parent or child, send an invite email,
+              and assign what the child can see.
+            </p>
+
+            <input type="text" id="childName" placeholder="Child name" />
+            <input type="email" id="childEmail" placeholder="Child email" />
+            <div class="button-row">
+              <button id="addMemberBtn">Send invite</button>
+              <button class="secondary">Family Link mode</button>
+            </div>
+
+            <div class="info-box">
+              Family Link mode lets the parent connect the child account, lock the
+              device at set hours, manage approved apps, and view usage by device.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tab-content" id="events">
+        <div class="grid two-cols">
+          <div class="card">
+            <h2>Today in your family</h2>
+            <div id="eventsList"></div>
+          </div>
+
+          <div class="card">
+            <h2>Quick add event</h2>
+            <input type="text" id="eventTitle" placeholder="Example: Idan birthday gift" />
+            <button id="addEventBtn">Add event</button>
+
+            <div class="info-box">
+              Example daily summary:<br />
+              <strong>Today:</strong> Birthday of Idan's friend at 17:00. Soccer practice at 16:00.
+              Danny bought ice cream for ₪100 at 12:00.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tab-content" id="screen">
+        <div class="grid two-cols" id="screenTimeList"></div>
+      </section>
+
+      <section class="tab-content" id="location">
+        <div class="grid two-cols" id="locationsList"></div>
+      </section>
+
+      <section class="tab-content" id="spending">
+        <div class="grid two-cols">
+          <div class="card">
+            <h2>Child card activity</h2>
+            <div id="spendingList"></div>
+          </div>
+
+          <div class="card">
+            <h2>Parent financial visibility</h2>
+            <div class="info-box">
+              Example: Danny went on Sunday at 12:00, bought from Chaim Ice Cream,
+              and paid ₪100. The parent can see who spent, how much, when, and where.
+            </div>
+            <div class="info-box">
+              The parent can also get alerts for spending above a limit, blocked
+              categories, late-night payments, and daily spending summaries.
+            </div>
+            <div class="button-col">
+              <button>Connect family card</button>
+              <button class="secondary">Set spending limit</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
