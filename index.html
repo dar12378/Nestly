@@ -3,141 +3,235 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KinFlow Family App</title>
+  <title>Nestly</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="app">
-    <header class="hero">
-      <div class="hero-left">
-        <div class="pill">Family Admin Dashboard</div>
-        <h1>KinFlow</h1>
-        <p>
-          One place for family events, daily reminders, screen time, location,
-          child email invite, Family Link style locking, and child card spending.
-        </p>
-      </div>
-      <div class="hero-right">
-        <h3>Daily summary</h3>
-        <p>
-          Today: Idan's friend birthday at 17:00. Danny spent ₪100 at Chaim Ice Cream at 12:00.
-        </p>
-      </div>
-    </header>
-
-    <section class="summary-grid">
-      <div class="card summary-card">
-        <h4>Family members</h4>
-        <div class="big-number" id="memberCount">4</div>
-        <p>Admin, parents, and children</p>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-box">
+        <div class="brand-logo">N</div>
+        <div>
+          <h1>Nestly</h1>
+          <p>Your family, organized in one smart place.</p>
+        </div>
       </div>
 
-      <div class="card summary-card">
-        <h4>Events today</h4>
-        <div class="big-number" id="eventCount">2</div>
-        <p>Birthdays, school, rides, activities</p>
+      <div class="profile-box">
+        <div class="profile-image-wrap">
+          <img id="profilePreview" src="https://via.placeholder.com/100x100.png?text=Profile" alt="Profile" />
+        </div>
+
+        <input type="file" id="profileImageInput" accept="image/*" />
+
+        <input type="text" id="profileFirstName" placeholder="First name" value="John" />
+        <button id="saveProfileBtn" class="full-btn">Save Profile</button>
+
+        <div class="profile-mini-info">
+          <span id="sidebarProfileName">John</span>
+          <small>Main Parent Admin</small>
+        </div>
       </div>
 
-      <div class="card summary-card">
-        <h4>Screen time alerts</h4>
-        <div class="big-number">2</div>
-        <p>Children above target</p>
-      </div>
+      <nav class="side-nav">
+        <button class="nav-btn active" data-section="dashboard">Dashboard</button>
+        <button class="nav-btn" data-section="family">Family</button>
+        <button class="nav-btn" data-section="events">Events</button>
+        <button class="nav-btn" data-section="screenTime">Screen Time</button>
+        <button class="nav-btn" data-section="location">Location</button>
+        <button class="nav-btn" data-section="spending">Card Spending</button>
+        <button class="nav-btn" data-section="notifications">Notifications</button>
+        <button class="nav-btn" data-section="settings">Settings</button>
+      </nav>
+    </aside>
 
-      <div class="card summary-card">
-        <h4>Child card spending</h4>
-        <div class="big-number" id="totalSpending">₪128</div>
-        <p>Visible by child, amount, time, and store</p>
-      </div>
-    </section>
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <h2 id="topbarTitle">Dashboard</h2>
+          <p id="topbarSubtitle">See everything important in one place.</p>
+        </div>
+        <div class="topbar-user">
+          <img id="topbarProfileImage" src="https://via.placeholder.com/100x100.png?text=Profile" alt="Profile" />
+          <div>
+            <strong id="topbarProfileName">John</strong>
+            <p>Main Parent Admin</p>
+          </div>
+        </div>
+      </header>
 
-    <nav class="tabs">
-      <button class="tab-btn active" data-tab="family">Family</button>
-      <button class="tab-btn" data-tab="events">Events</button>
-      <button class="tab-btn" data-tab="screen">Screen Time</button>
-      <button class="tab-btn" data-tab="location">Location</button>
-      <button class="tab-btn" data-tab="spending">Card Spending</button>
-    </nav>
+      <section class="content-section active" id="dashboard">
+        <div class="cards-grid">
+          <div class="card stat-card">
+            <h3>Family Members</h3>
+            <div class="big-number" id="memberCount">4</div>
+            <p>Parents and children connected</p>
+          </div>
 
-    <main>
-      <section class="tab-content active" id="family">
-        <div class="grid two-cols">
+          <div class="card stat-card">
+            <h3>Events Today</h3>
+            <div class="big-number" id="eventCount">2</div>
+            <p>Birthdays, school and rides</p>
+          </div>
+
+          <div class="card stat-card">
+            <h3>Screen Alerts</h3>
+            <div class="big-number">2</div>
+            <p>Children above daily limit</p>
+          </div>
+
+          <div class="card stat-card">
+            <h3>Total Spending</h3>
+            <div class="big-number" id="totalSpending">₪128</div>
+            <p>All child card activity</p>
+          </div>
+        </div>
+
+        <div class="two-col-grid">
           <div class="card">
-            <h2>Family structure</h2>
+            <h3>Today Summary</h3>
+            <div class="info-box">
+              Today: Michael has a birthday event at 17:00. Lucas has soccer practice at 16:00.
+              Lucas spent ₪100 at Chaim Ice Cream at 12:00.
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Quick Actions</h3>
+            <div class="button-column">
+              <button class="action-btn" onclick="goToSection('family')">Add Family Member</button>
+              <button class="action-btn" onclick="goToSection('events')">Add New Event</button>
+              <button class="action-btn" onclick="goToSection('spending')">View Spending</button>
+              <button class="action-btn" onclick="goToSection('notifications')">Set Daily Summary</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="family">
+        <div class="two-col-grid">
+          <div class="card">
+            <h3>Family Members</h3>
             <div id="membersList"></div>
           </div>
 
           <div class="card">
-            <h2>Invite child by email</h2>
-            <p class="muted">
-              Parent admin can add another parent or child, send an invite email,
-              and assign what the child can see.
-            </p>
-
-            <input type="text" id="childName" placeholder="Child name" />
-            <input type="email" id="childEmail" placeholder="Child email" />
-            <div class="button-row">
-              <button id="addMemberBtn">Send invite</button>
-              <button class="secondary">Family Link mode</button>
-            </div>
+            <h3>Add Child or Parent</h3>
+            <input type="text" id="memberName" placeholder="Name" />
+            <input type="email" id="memberEmail" placeholder="Email" />
+            <select id="memberRole">
+              <option value="Child">Child</option>
+              <option value="Parent">Parent</option>
+            </select>
+            <button id="addMemberBtn">Add Member</button>
 
             <div class="info-box">
-              Family Link mode lets the parent connect the child account, lock the
-              device at set hours, manage approved apps, and view usage by device.
+              You can add a parent, child, and later connect control features like family device lock and daily updates.
             </div>
           </div>
         </div>
       </section>
 
-      <section class="tab-content" id="events">
-        <div class="grid two-cols">
+      <section class="content-section" id="events">
+        <div class="two-col-grid">
           <div class="card">
-            <h2>Today in your family</h2>
+            <h3>Events List</h3>
             <div id="eventsList"></div>
           </div>
 
           <div class="card">
-            <h2>Quick add event</h2>
-            <input type="text" id="eventTitle" placeholder="Example: Idan birthday gift" />
-            <button id="addEventBtn">Add event</button>
+            <h3>Add Event</h3>
+            <input type="text" id="eventTitle" placeholder="Event title" />
+            <input type="text" id="eventPerson" placeholder="For who" />
+            <input type="text" id="eventTime" placeholder="Time, example 17:00" />
+            <button id="addEventBtn">Add Event</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="screenTime">
+        <div class="card">
+          <h3>Screen Time</h3>
+          <div id="screenTimeList" class="cards-grid two-grid"></div>
+        </div>
+      </section>
+
+      <section class="content-section" id="location">
+        <div class="card">
+          <h3>Location</h3>
+          <div id="locationsList" class="cards-grid two-grid"></div>
+        </div>
+      </section>
+
+      <section class="content-section" id="spending">
+        <div class="two-col-grid">
+          <div class="card">
+            <h3>Child Card Activity</h3>
+            <div id="spendingList"></div>
+          </div>
+
+          <div class="card">
+            <h3>Add Spending</h3>
+            <input type="text" id="spendingChild" placeholder="Child name" />
+            <input type="text" id="spendingMerchant" placeholder="Store name" />
+            <input type="number" id="spendingAmount" placeholder="Amount" />
+            <input type="text" id="spendingDay" placeholder="Day, example Sunday" />
+            <input type="text" id="spendingTime" placeholder="Time, example 12:00" />
+            <button id="addSpendingBtn">Add Spending</button>
 
             <div class="info-box">
-              Example daily summary:<br />
-              <strong>Today:</strong> Birthday of Idan's friend at 17:00. Soccer practice at 16:00.
-              Danny bought ice cream for ₪100 at 12:00.
+              Example: Lucas went on Sunday at 12:00, bought from Chaim Ice Cream, and paid ₪100.
             </div>
           </div>
         </div>
       </section>
 
-      <section class="tab-content" id="screen">
-        <div class="grid two-cols" id="screenTimeList"></div>
-      </section>
-
-      <section class="tab-content" id="location">
-        <div class="grid two-cols" id="locationsList"></div>
-      </section>
-
-      <section class="tab-content" id="spending">
-        <div class="grid two-cols">
+      <section class="content-section" id="notifications">
+        <div class="two-col-grid">
           <div class="card">
-            <h2>Child card activity</h2>
-            <div id="spendingList"></div>
+            <h3>Daily Summary</h3>
+            <div class="info-box">
+              Send daily family updates every morning by email or WhatsApp:
+              birthdays, school events, pickups, spending alerts and tasks.
+            </div>
           </div>
 
           <div class="card">
-            <h2>Parent financial visibility</h2>
+            <h3>Notification Settings</h3>
+            <label class="checkbox-row">
+              <input type="checkbox" checked />
+              Send daily email summary
+            </label>
+            <label class="checkbox-row">
+              <input type="checkbox" />
+              Send WhatsApp summary
+            </label>
+            <label class="checkbox-row">
+              <input type="checkbox" checked />
+              Spending alerts
+            </label>
+            <label class="checkbox-row">
+              <input type="checkbox" checked />
+              Screen time alerts
+            </label>
+            <button>Save Notification Settings</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="settings">
+        <div class="two-col-grid">
+          <div class="card">
+            <h3>Profile Settings</h3>
+            <input type="text" id="settingsFirstName" placeholder="First name" value="John" />
+            <button id="saveSettingsNameBtn">Save Name</button>
+          </div>
+
+          <div class="card">
+            <h3>App Info</h3>
             <div class="info-box">
-              Example: Danny went on Sunday at 12:00, bought from Chaim Ice Cream,
-              and paid ₪100. The parent can see who spent, how much, when, and where.
-            </div>
-            <div class="info-box">
-              The parent can also get alerts for spending above a limit, blocked
-              categories, late-night payments, and daily spending summaries.
-            </div>
-            <div class="button-col">
-              <button>Connect family card</button>
-              <button class="secondary">Set spending limit</button>
+              <strong>Nestly</strong><br />
+              Your family, organized in one smart place.
             </div>
           </div>
         </div>
