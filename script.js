@@ -1,32 +1,32 @@
 const members = [
-  { name: "Rina", role: "Admin Parent", email: "rina@kinflow.app" },
-  { name: "Avi", role: "Parent", email: "avi@kinflow.app" },
-  { name: "Idan", role: "Child", email: "idan@kinflow.app" },
-  { name: "Danny", role: "Child", email: "danny@kinflow.app" }
+  { name: "John", role: "Admin Parent", email: "john@nestly.app" },
+  { name: "Sarah", role: "Parent", email: "sarah@nestly.app" },
+  { name: "Michael", role: "Child", email: "michael@nestly.app" },
+  { name: "Lucas", role: "Child", email: "lucas@nestly.app" }
 ];
 
 const events = [
   {
-    title: "Birthday of Idan's friend",
+    title: "Birthday of Michael's friend",
     date: "Today",
     time: "17:00",
-    owner: "Rina",
-    child: "Idan",
-    note: "Bring gift and confirm pickup"
+    owner: "John",
+    person: "Michael",
+    note: "Bring a gift and confirm pickup"
   },
   {
     title: "Soccer practice",
     date: "Today",
     time: "16:00",
-    owner: "Avi",
-    child: "Danny",
-    note: "Water bottle + shoes"
+    owner: "Sarah",
+    person: "Lucas",
+    note: "Water bottle and shoes"
   }
 ];
 
 const screenTime = [
   {
-    child: "Idan",
+    child: "Michael",
     todayHours: 2.3,
     weeklyAvg: 2.8,
     device: "iPhone",
@@ -34,7 +34,7 @@ const screenTime = [
     app: "YouTube"
   },
   {
-    child: "Danny",
+    child: "Lucas",
     todayHours: 3.8,
     weeklyAvg: 3.1,
     device: "Android",
@@ -44,47 +44,87 @@ const screenTime = [
 ];
 
 const locations = [
-  { child: "Idan", place: "School", updated: "13 min ago", status: "Safe zone" },
-  { child: "Danny", place: "Chaim Ice Cream", updated: "4 min ago", status: "Outside home" }
+  { child: "Michael", place: "School", updated: "13 min ago", status: "Safe zone" },
+  { child: "Lucas", place: "Chaim Ice Cream", updated: "4 min ago", status: "Outside home" }
 ];
 
 const spendings = [
   {
-    child: "Danny",
+    child: "Lucas",
     day: "Sunday",
     time: "12:00",
     merchant: "Chaim Ice Cream",
     amount: 100,
-    cardName: "Danny Teen Card",
+    cardName: "Lucas Teen Card",
     category: "Food"
   },
   {
-    child: "Idan",
+    child: "Michael",
     day: "Monday",
     time: "15:40",
     merchant: "School Kiosk",
     amount: 28,
-    cardName: "Idan Teen Card",
+    cardName: "Michael Teen Card",
     category: "Snacks"
   }
 ];
+
+const sectionTitles = {
+  dashboard: {
+    title: "Dashboard",
+    subtitle: "See everything important in one place."
+  },
+  family: {
+    title: "Family",
+    subtitle: "Manage parents and children."
+  },
+  events: {
+    title: "Events",
+    subtitle: "Track birthdays, school and activities."
+  },
+  screenTime: {
+    title: "Screen Time",
+    subtitle: "Monitor device usage and limits."
+  },
+  location: {
+    title: "Location",
+    subtitle: "See child location and safe zones."
+  },
+  spending: {
+    title: "Card Spending",
+    subtitle: "Track what each child bought and when."
+  },
+  notifications: {
+    title: "Notifications",
+    subtitle: "Control daily family alerts."
+  },
+  settings: {
+    title: "Settings",
+    subtitle: "Update your profile and app preferences."
+  }
+};
+
+function getRoleClass(role) {
+  if (role === "Admin Parent") return "admin-badge";
+  if (role === "Parent") return "parent-badge";
+  return "child-badge";
+}
 
 function renderMembers() {
   const container = document.getElementById("membersList");
   container.innerHTML = "";
 
-  members.forEach(member => {
-    let roleClass = "child";
-    if (member.role === "Admin Parent") roleClass = "admin";
-    if (member.role === "Parent") roleClass = "parent";
-
+  members.forEach((member, index) => {
     container.innerHTML += `
       <div class="member-row">
         <div>
-          <div><strong>${member.name}</strong></div>
-          <div class="item-meta">${member.email}</div>
+          <strong>${member.name}</strong>
+          <div class="member-meta">${member.email}</div>
         </div>
-        <div class="role-badge ${roleClass}">${member.role}</div>
+        <div>
+          <span class="role-badge ${getRoleClass(member.role)}">${member.role}</span>
+          <button style="margin-left:10px;" onclick="editMember(${index})">Edit</button>
+        </div>
       </div>
     `;
   });
@@ -96,11 +136,11 @@ function renderEvents() {
   const container = document.getElementById("eventsList");
   container.innerHTML = "";
 
-  events.forEach(event => {
+  events.forEach((event) => {
     container.innerHTML += `
       <div class="item-box">
         <h4>${event.title}</h4>
-        <div class="item-meta">${event.child} • Owner: ${event.owner}</div>
+        <div class="item-meta">${event.person} • Owner: ${event.owner}</div>
         <div class="item-meta">${event.date} • ${event.time}</div>
         <p>${event.note}</p>
       </div>
@@ -114,26 +154,21 @@ function renderScreenTime() {
   const container = document.getElementById("screenTimeList");
   container.innerHTML = "";
 
-  screenTime.forEach(item => {
+  screenTime.forEach((item) => {
     const percent = Math.min(100, Math.round((item.todayHours / 4) * 100));
 
     container.innerHTML += `
-      <div class="card">
-        <h2>${item.child}</h2>
-        <p><strong>Device:</strong> ${item.device}</p>
-        <p><strong>Today usage:</strong> ${item.todayHours}h</p>
-        <p><strong>Weekly average:</strong> ${item.weeklyAvg}h</p>
-        <p><strong>Main app:</strong> ${item.app}</p>
-        <p><strong>Auto lock:</strong> ${item.lockAt}</p>
+      <div class="mini-card">
+        <h4>${item.child}</h4>
+        <div class="item-meta">Device: ${item.device}</div>
+        <div class="item-meta">Today: ${item.todayHours}h</div>
+        <div class="item-meta">Weekly Avg: ${item.weeklyAvg}h</div>
+        <div class="item-meta">Main App: ${item.app}</div>
+        <div class="item-meta">Auto Lock: ${item.lockAt}</div>
         <div class="progress-wrap">
-          <div class="item-meta">Daily limit ${percent}%</div>
           <div class="progress-bar">
             <div class="progress-fill" style="width:${percent}%"></div>
           </div>
-        </div>
-        <div class="button-row" style="margin-top:16px;">
-          <button>Lock now</button>
-          <button class="secondary">Change allowed apps</button>
         </div>
       </div>
     `;
@@ -144,20 +179,13 @@ function renderLocations() {
   const container = document.getElementById("locationsList");
   container.innerHTML = "";
 
-  locations.forEach(item => {
+  locations.forEach((item) => {
     container.innerHTML += `
-      <div class="card">
-        <h2>${item.child}</h2>
-        <p><strong>Location:</strong> ${item.place}</p>
-        <p><strong>Status:</strong> ${item.status}</p>
-        <p><strong>Updated:</strong> ${item.updated}</p>
-        <div class="info-box">
-          Parent can view the child's last location, safe zones, and alerts when the child leaves home, school, or another approved place.
-        </div>
-        <div class="button-row">
-          <button>Open map</button>
-          <button class="secondary">Create safe zone</button>
-        </div>
+      <div class="mini-card">
+        <h4>${item.child}</h4>
+        <div class="item-meta">Location: ${item.place}</div>
+        <div class="item-meta">Status: ${item.status}</div>
+        <div class="item-meta">Updated: ${item.updated}</div>
       </div>
     `;
   });
@@ -169,15 +197,15 @@ function renderSpendings() {
 
   let total = 0;
 
-  spendings.forEach(item => {
-    total += item.amount;
+  spendings.forEach((item) => {
+    total += Number(item.amount);
 
     container.innerHTML += `
       <div class="item-box">
         <h4>${item.child} spent ₪${item.amount}</h4>
         <div class="item-meta">${item.merchant} • ${item.category}</div>
         <div class="item-meta">${item.day} • ${item.time}</div>
-        <p>Paid with: ${item.cardName}</p>
+        <div class="item-meta">Card: ${item.cardName}</div>
       </div>
     `;
   });
@@ -185,62 +213,167 @@ function renderSpendings() {
   document.getElementById("totalSpending").textContent = `₪${total}`;
 }
 
-function setupTabs() {
-  const buttons = document.querySelectorAll(".tab-btn");
-  const tabs = document.querySelectorAll(".tab-content");
+function setupNavigation() {
+  const navButtons = document.querySelectorAll(".nav-btn");
+  const sections = document.querySelectorAll(".content-section");
 
-  buttons.forEach(button => {
+  navButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      buttons.forEach(btn => btn.classList.remove("active"));
-      tabs.forEach(tab => tab.classList.remove("active"));
+      navButtons.forEach((btn) => btn.classList.remove("active"));
+      sections.forEach((section) => section.classList.remove("active"));
 
       button.classList.add("active");
-      document.getElementById(button.dataset.tab).classList.add("active");
+      const sectionId = button.dataset.section;
+      document.getElementById(sectionId).classList.add("active");
+
+      document.getElementById("topbarTitle").textContent = sectionTitles[sectionId].title;
+      document.getElementById("topbarSubtitle").textContent = sectionTitles[sectionId].subtitle;
     });
   });
 }
 
-function setupActions() {
+function goToSection(sectionId) {
+  document.querySelectorAll(".nav-btn").forEach((btn) => {
+    btn.classList.remove("active");
+    if (btn.dataset.section === sectionId) btn.classList.add("active");
+  });
+
+  document.querySelectorAll(".content-section").forEach((section) => {
+    section.classList.remove("active");
+  });
+
+  document.getElementById(sectionId).classList.add("active");
+  document.getElementById("topbarTitle").textContent = sectionTitles[sectionId].title;
+  document.getElementById("topbarSubtitle").textContent = sectionTitles[sectionId].subtitle;
+}
+
+function editMember(index) {
+  const newName = prompt("Enter new name:", members[index].name);
+  if (!newName || !newName.trim()) return;
+
+  members[index].name = newName.trim();
+  renderMembers();
+}
+
+function setupAddMember() {
   document.getElementById("addMemberBtn").addEventListener("click", () => {
-    const name = document.getElementById("childName").value.trim();
-    const email = document.getElementById("childEmail").value.trim();
+    const name = document.getElementById("memberName").value.trim();
+    const email = document.getElementById("memberEmail").value.trim();
+    const role = document.getElementById("memberRole").value;
 
     if (!name || !email) {
-      alert("Please enter child name and email");
+      alert("Please enter name and email.");
       return;
     }
 
     members.push({
       name,
-      role: "Child",
+      role,
       email
     });
 
-    document.getElementById("childName").value = "";
-    document.getElementById("childEmail").value = "";
+    document.getElementById("memberName").value = "";
+    document.getElementById("memberEmail").value = "";
+    document.getElementById("memberRole").value = "Child";
 
     renderMembers();
   });
+}
 
+function setupAddEvent() {
   document.getElementById("addEventBtn").addEventListener("click", () => {
     const title = document.getElementById("eventTitle").value.trim();
+    const person = document.getElementById("eventPerson").value.trim();
+    const time = document.getElementById("eventTime").value.trim();
 
-    if (!title) {
-      alert("Please enter event title");
+    if (!title || !person || !time) {
+      alert("Please fill all event fields.");
       return;
     }
 
     events.unshift({
       title,
       date: "Today",
-      time: "18:00",
-      owner: "Rina",
-      child: "Idan",
-      note: "Added by parent dashboard"
+      time,
+      owner: document.getElementById("sidebarProfileName").textContent,
+      person,
+      note: "Added from the Nestly dashboard"
     });
 
     document.getElementById("eventTitle").value = "";
+    document.getElementById("eventPerson").value = "";
+    document.getElementById("eventTime").value = "";
+
     renderEvents();
+  });
+}
+
+function setupAddSpending() {
+  document.getElementById("addSpendingBtn").addEventListener("click", () => {
+    const child = document.getElementById("spendingChild").value.trim();
+    const merchant = document.getElementById("spendingMerchant").value.trim();
+    const amount = document.getElementById("spendingAmount").value.trim();
+    const day = document.getElementById("spendingDay").value.trim();
+    const time = document.getElementById("spendingTime").value.trim();
+
+    if (!child || !merchant || !amount || !day || !time) {
+      alert("Please fill all spending fields.");
+      return;
+    }
+
+    spendings.unshift({
+      child,
+      day,
+      time,
+      merchant,
+      amount: Number(amount),
+      cardName: `${child} Teen Card`,
+      category: "General"
+    });
+
+    document.getElementById("spendingChild").value = "";
+    document.getElementById("spendingMerchant").value = "";
+    document.getElementById("spendingAmount").value = "";
+    document.getElementById("spendingDay").value = "";
+    document.getElementById("spendingTime").value = "";
+
+    renderSpendings();
+  });
+}
+
+function updateProfileName(newName) {
+  if (!newName || !newName.trim()) return;
+
+  const cleanName = newName.trim();
+  document.getElementById("sidebarProfileName").textContent = cleanName;
+  document.getElementById("topbarProfileName").textContent = cleanName;
+  document.getElementById("profileFirstName").value = cleanName;
+  document.getElementById("settingsFirstName").value = cleanName;
+}
+
+function setupProfile() {
+  document.getElementById("saveProfileBtn").addEventListener("click", () => {
+    const newName = document.getElementById("profileFirstName").value;
+    updateProfileName(newName);
+    alert("Profile saved.");
+  });
+
+  document.getElementById("saveSettingsNameBtn").addEventListener("click", () => {
+    const newName = document.getElementById("settingsFirstName").value;
+    updateProfileName(newName);
+    alert("Name updated.");
+  });
+
+  document.getElementById("profileImageInput").addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById("profilePreview").src = e.target.result;
+      document.getElementById("topbarProfileImage").src = e.target.result;
+    };
+    reader.readAsDataURL(file);
   });
 }
 
@@ -250,8 +383,11 @@ function init() {
   renderScreenTime();
   renderLocations();
   renderSpendings();
-  setupTabs();
-  setupActions();
+  setupNavigation();
+  setupAddMember();
+  setupAddEvent();
+  setupAddSpending();
+  setupProfile();
 }
 
 init();
